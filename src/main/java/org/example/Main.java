@@ -16,8 +16,6 @@ public class Main {
 
     private static final String[] LABELS = {"DS8", "DS10", "DS50", "DS100"};
 
-    // Pune true doar dacă vrei grafice ASCII în consolă.
-    // Recomand false pentru output curat.
     private static final boolean PRINT_CHARTS = false;
 
     public static void main(String[] args) {
@@ -46,7 +44,6 @@ public class Main {
         }
 
         printRatio("TB-10 / TB-8", btTimes[1], btTimes[0]);
-        System.out.println("Observation: backtracking grows exponentially, so it is not feasible for DS50 and DS100.");
 
         section("3. Neighborhood Search");
         Solution[] nsSolutions = new Solution[4];
@@ -130,33 +127,16 @@ public class Main {
         section("7. Time comparison");
         printTimeComparison(btTimes, nsTimes, saTimes, gaTimes);
 
-        section("8. Parameter influence");
-        printSAParameterInfluence(saSolutions);
-        printGAParameterInfluence(gaSolutions);
-
-        section("9. Conclusions");
-
-        System.out.println("Neighborhood Search vs Backtracking:");
-        System.out.println("- Backtracking guarantees the optimal solution for DS8 and DS10, but it explores an exponential search space.");
-        System.out.println("- Neighborhood Search is much faster and can be applied to DS50 and DS100.");
-        System.out.println("- However, Neighborhood Search may stop in a local optimum, as shown by the lower values obtained on DS50 and DS100.");
-
-        System.out.println();
-
-        System.out.println("SA and GA vs NS and Backtracking:");
-        System.out.println("- Simulated Annealing improves local search by accepting worse moves with a probability controlled by temperature.");
-        System.out.println("- This allows SA to escape local optima and obtain better solutions than NS on large datasets.");
-        System.out.println("- Genetic Algorithm works with a population of solutions and uses selection, crossover, mutation and cloning.");
-        System.out.println("- On DS50 and DS100, GA obtained the best or near-best results, but required more time than NS.");
-        System.out.println("- Backtracking remains the only exact method, but it is feasible only for small datasets.");
-        System.out.println("- For large datasets, SA and GA are more practical because they trade guaranteed optimality for good solutions in reasonable time.");
+        section("8. Parameter sets and obtained values");
+        printSAParameterResults(saSolutions);
+        printGAParameterResults(gaSolutions);
 
         section("Done");
     }
 
     private static void printSolution(String label, Solution solution, long timeNs) {
         System.out.printf(
-                "%-35s | value = %-5d | weight = %-5d | time = %.3f ms%n",
+                "%-45s | value = %-5d | weight = %-5d | time = %.3f ms%n",
                 label,
                 solution.totalValue,
                 solution.totalWeight,
@@ -221,69 +201,79 @@ public class Main {
             printRatio("TB-10 / TGA[" + p + "]-10", btTimes[1], gaTimes[1][p]);
         }
 
-        System.out.println("\nLarge datasets: SA / GA / NS");
-        for (int d = 2; d < 4; d++) {
-            System.out.println(LABELS[d] + ":");
+        System.out.println("\nLarge datasets:");
+        System.out.printf("%-6s | %-10s | %-12s | %-12s | %-12s%n",
+                "DS", "NS", "SA[0]", "SA[1]", "SA[2]");
+        System.out.println("-".repeat(60));
 
-            for (int p = 0; p < 3; p++) {
-                System.out.printf(
-                        "  SA[%d] = %.3f ms, GA[%d] = %.3f ms, NS = %.3f ms%n",
-                        p,
-                        saTimes[d][p] / 1_000_000.0,
-                        p,
-                        gaTimes[d][p] / 1_000_000.0,
-                        nsTimes[d] / 1_000_000.0
-                );
-            }
+        for (int d = 2; d < 4; d++) {
+            System.out.printf(
+                    "%-6s | %-10.3f | %-12.3f | %-12.3f | %-12.3f%n",
+                    LABELS[d],
+                    nsTimes[d] / 1_000_000.0,
+                    saTimes[d][0] / 1_000_000.0,
+                    saTimes[d][1] / 1_000_000.0,
+                    saTimes[d][2] / 1_000_000.0
+            );
+        }
+
+        System.out.println();
+        System.out.printf("%-6s | %-10s | %-12s | %-12s | %-12s%n",
+                "DS", "NS", "GA[0]", "GA[1]", "GA[2]");
+        System.out.println("-".repeat(60));
+
+        for (int d = 2; d < 4; d++) {
+            System.out.printf(
+                    "%-6s | %-10.3f | %-12.3f | %-12.3f | %-12.3f%n",
+                    LABELS[d],
+                    nsTimes[d] / 1_000_000.0,
+                    gaTimes[d][0] / 1_000_000.0,
+                    gaTimes[d][1] / 1_000_000.0,
+                    gaTimes[d][2] / 1_000_000.0
+            );
         }
     }
 
-    private static void printSAParameterInfluence(Solution[][] saSolutions) {
+    private static void printSAParameterResults(Solution[][] saSolutions) {
         System.out.println("Simulated Annealing parameter sets:");
-        System.out.println("Set 0: T0=1500,  nrep=500,  alpha=0.90");
-        System.out.println("Set 1: T0=15000, nrep=1500, alpha=0.99");
-        System.out.println("Set 2: T0=500,   nrep=200,  alpha=0.85");
+        System.out.println("SA[0]: T0=1500,  nrep=500,  alpha=0.90");
+        System.out.println("SA[1]: T0=15000, nrep=1500, alpha=0.99");
+        System.out.println("SA[2]: T0=500,   nrep=200,  alpha=0.85");
         System.out.println();
+
+        System.out.printf("%-6s | %-10s | %-10s | %-10s%n", "DS", "SA[0]", "SA[1]", "SA[2]");
+        System.out.println("-".repeat(45));
 
         for (int d = 0; d < 4; d++) {
             System.out.printf(
-                    "%-6s | Set0=%-5d | Set1=%-5d | Set2=%-5d%n",
+                    "%-6s | %-10d | %-10d | %-10d%n",
                     LABELS[d],
                     saSolutions[d][0].totalValue,
                     saSolutions[d][1].totalValue,
                     saSolutions[d][2].totalValue
             );
         }
-
-        System.out.println("\nGeneral interpretation:");
-        System.out.println("- higher initial temperature allows more exploration");
-        System.out.println("- larger temperature length gives more trials at each temperature");
-        System.out.println("- cooling ratio closer to 1 means slower cooling and usually better exploration");
     }
 
-    private static void printGAParameterInfluence(Solution[][] gaSolutions) {
+    private static void printGAParameterResults(Solution[][] gaSolutions) {
         System.out.println("\nGenetic Algorithm parameter sets:");
-        System.out.println("Set 0: population=1000, iterations=50,   crossover=80%, mutation=15%, cloning=5%");
-        System.out.println("Set 1: population=50,   iterations=1000, crossover=60%, mutation=30%, cloning=10%");
-        System.out.println("Set 2: population=200,  iterations=200,  crossover=70%, mutation=20%, cloning=10%");
+        System.out.println("GA[0]: population=1000, iterations=50,   crossover=80%, mutation=15%, cloning=5%");
+        System.out.println("GA[1]: population=50,   iterations=1000, crossover=60%, mutation=30%, cloning=10%");
+        System.out.println("GA[2]: population=200,  iterations=200,  crossover=70%, mutation=20%, cloning=10%");
         System.out.println();
+
+        System.out.printf("%-6s | %-10s | %-10s | %-10s%n", "DS", "GA[0]", "GA[1]", "GA[2]");
+        System.out.println("-".repeat(45));
 
         for (int d = 0; d < 4; d++) {
             System.out.printf(
-                    "%-6s | Set0=%-5d | Set1=%-5d | Set2=%-5d%n",
+                    "%-6s | %-10d | %-10d | %-10d%n",
                     LABELS[d],
                     gaSolutions[d][0].totalValue,
                     gaSolutions[d][1].totalValue,
                     gaSolutions[d][2].totalValue
             );
         }
-
-        System.out.println("\nGeneral interpretation:");
-        System.out.println("- large population with few iterations explores many individuals early");
-        System.out.println("- small population with many iterations evolves longer but may lose diversity");
-        System.out.println("- crossover mainly exploits existing good structure");
-        System.out.println("- mutation adds exploration and prevents premature convergence");
-        System.out.println("- cloning preserves good individuals between generations");
     }
 
     private static void printRatio(String label, long numerator, long denominator) {
