@@ -29,6 +29,9 @@ public class Main {
             System.out.println();
         }
 
+        // Warmup to prevent JVM JIT compilation anomalies
+        warmup(datasets[0]);
+
         section("2. Backtracking");
         Solution[] btSolutions = new Solution[4];
         long[] btTimes = new long[4];
@@ -283,6 +286,24 @@ public class Main {
         }
 
         System.out.printf("%-30s = %.2f%n", label, (double) numerator / denominator);
+    }
+
+    private static void warmup(Dataset smallDataset) {
+        System.out.println("\nWarming up JVM...");
+
+        // Warmup Backtracking
+        new Backtracking(smallDataset).solve();
+
+        // Warmup Neighborhood Search
+        new NeighborhoodSearch(smallDataset).solve();
+
+        // Warmup Simulated Annealing
+        new SimulatedAnnealing(smallDataset, SA_T0[0], SA_NREP[0], SA_ALPHA[0]).solve();
+
+        // Warmup Genetic Algorithm
+        new GeneticAlgorithm(smallDataset, GA_POP[0], GA_ITER[0], GA_CX[0], GA_MUT[0], GA_CLONE[0]).solve();
+
+        System.out.println("Warmup complete.\n");
     }
 
     private static void section(String title) {
