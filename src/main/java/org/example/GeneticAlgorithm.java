@@ -19,31 +19,30 @@ import java.util.*;
 public class GeneticAlgorithm {
     private static final int TOURNAMENT_K = 3;
 
-    private final Dataset   ds;
+    private final Dataset ds;
     private final RunLogger logger;
-    private final Random    rand = new Random();
+    private final Random rand = new Random();
 
-    private final int    populationSize;
-    private final int    iterations;
+    private final int populationSize;
+    private final int iterations;
     private final double crossoverRate;
     private final double mutationRate;
     private final double cloningRate;
 
-    public GeneticAlgorithm(Dataset ds, int populationSize, int iterations,
-                            double crossoverRate, double mutationRate, double cloningRate) {
-        this.ds             = ds;
+    public GeneticAlgorithm(Dataset ds, int populationSize, int iterations, double crossoverRate, double mutationRate, double cloningRate) {
+        this.ds = ds;
         this.populationSize = populationSize;
-        this.iterations     = iterations;
-        this.crossoverRate  = crossoverRate;
-        this.mutationRate   = mutationRate;
-        this.cloningRate    = cloningRate;
-        this.logger         = new RunLogger();
+        this.iterations = iterations;
+        this.crossoverRate = crossoverRate;
+        this.mutationRate = mutationRate;
+        this.cloningRate = cloningRate;
+        this.logger = new RunLogger();
     }
 
     public Solution solve() {
         List<Solution> population = initialPopulation();
         sortByFitness(population);
-        Solution bestEver = new Solution(population.get(0));
+        Solution bestEver = new Solution(population.getFirst());
 
         for (int iter = 0; iter < iterations; iter++) {
             List<Solution> next = new ArrayList<>(populationSize);
@@ -77,14 +76,14 @@ public class GeneticAlgorithm {
                 next.add(DataGenerator.randomFeasibleSolution(ds, rand));
             }
             while (next.size() > populationSize) {
-                next.remove(next.size() - 1);
+                next.removeLast();
             }
 
             population = next;
             sortByFitness(population);
 
             // Logăm cel mai bun individ din generația curentă (req. #16)
-            Solution iterBest = population.get(0);
+            Solution iterBest = population.getFirst();
             logger.log(iterBest.cost(ds));
             if (iterBest.isBetterThan(bestEver, ds)) {
                 bestEver = new Solution(iterBest);
