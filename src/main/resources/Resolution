@@ -1,0 +1,189 @@
+================================================================================
+1. Dataset generation
+================================================================================
+[DS8]
+Dataset{ N=8, G=126
+  weights=[24, 22, 32, 36, 30, 49, 21, 39]
+  values =[33, 21, 17, 30, 22, 60, 96, 50] }
+
+[DS10]
+Dataset{ N=10, G=145
+  weights=[21, 25, 26, 37, 25, 42, 10, 46, 32, 27]
+  values =[64, 17, 29, 59, 38, 83, 80, 84, 13, 92] }
+
+[DS50]
+Dataset{ N=50, G=683
+  weights=[13, 16, 40, 17, 24, 11, 10, 43, 19, 16, 32, 31, 18, 43, 13, 29, 32, 19, 19, 39, 32, 15, 30, 13, 41, 31, 33, 26, 49, 41, 27, 36, 12, 18, 23, 11, 35, 42, 27, 19, 23, 27, 37, 46, 22, 34, 31, 26, 42, 34]
+  values =[12, 50, 75, 90, 20, 65, 80, 17, 65, 89, 50, 17, 31, 12, 37, 38, 76, 94, 65, 100, 51, 88, 32, 61, 64, 48, 19, 38, 75, 41, 27, 79, 45, 15, 32, 37, 19, 16, 62, 82, 77, 83, 40, 43, 21, 38, 99, 79, 24, 22] }
+
+[DS100]
+Dataset{ N=100, G=1426
+  weights=[31, 33, 25, 19, 35, 29, 41, 30, 26, 22, 19, 34, 11, 16, 16, 10, 35, 15, 42, 23, 42, 20, 39, 50, 17, 49, 32, 36, 13, 25, 13, 35, 26, 43, 33, 18, 48, 38, 47, 14, 44, 44, 43, 16, 10, 10, 37, 46, 12, 19, 47, 28, 50, 32, 33, 34, 20, 30, 46, 43, 25, 36, 45, 14, 18, 15, 10, 11, 48, 23, 41, 33, 20, 40, 18, 15, 42, 41, 13, 27, 14, 15, 19, 20, 34, 29, 49, 13, 15, 15, 19, 46, 27, 41, 12, 35, 39, 29, 24, 29]
+  values =[13, 69, 70, 85, 22, 76, 75, 21, 14, 41, 45, 71, 95, 50, 52, 64, 29, 24, 82, 50, 42, 15, 20, 23, 90, 67, 63, 31, 30, 68, 42, 90, 32, 68, 76, 73, 63, 47, 50, 46, 34, 70, 73, 27, 37, 70, 52, 93, 47, 33, 39, 90, 63, 45, 86, 75, 77, 19, 93, 100, 21, 48, 73, 59, 35, 87, 67, 49, 22, 51, 54, 63, 58, 39, 46, 46, 97, 88, 91, 19, 85, 92, 69, 87, 89, 19, 80, 36, 59, 81, 45, 18, 40, 17, 26, 44, 81, 28, 47, 60] }
+
+
+Warming up JVM...
+Warmup complete.
+
+
+================================================================================
+2. Backtracking
+================================================================================
+DS8                                           | value = 211   | weight = 124   | time = 0.092 ms
+DS10                                          | value = 379   | weight = 141   | time = 0.040 ms
+TB-10 / TB-8                   = 0.43
+
+================================================================================
+3. Neighborhood Search
+================================================================================
+DS8                                           | value = 206   | weight = 126   | time = 0.018 ms
+DS10                                          | value = 278   | weight = 143   | time = 0.012 ms
+DS50                                          | value = 1527  | weight = 682   | time = 0.024 ms
+DS100                                         | value = 2570  | weight = 1426  | time = 0.042 ms
+TNS-10 / TNS-8                 = 0.67
+TB-8 / TNS-8                   = 5.17
+TB-10 / TNS-10                 = 3.35
+
+================================================================================
+4. Simulated Annealing
+================================================================================
+
+DS8
+SA Set 0 SA{T0=1500, nrep=500, alpha=0.90}    | value = 211   | weight = 124   | time = 11.942 ms
+SA Set 1 SA{T0=15000, nrep=1500, alpha=0.99}  | value = 211   | weight = 124   | time = 271.819 ms
+SA Set 2 SA{T0=500, nrep=200, alpha=0.85}     | value = 211   | weight = 124   | time = 1.293 ms
+
+DS10
+SA Set 0 SA{T0=1500, nrep=500, alpha=0.90}    | value = 379   | weight = 141   | time = 4.756 ms
+SA Set 1 SA{T0=15000, nrep=1500, alpha=0.99}  | value = 379   | weight = 141   | time = 146.660 ms
+SA Set 2 SA{T0=500, nrep=200, alpha=0.85}     | value = 379   | weight = 141   | time = 0.827 ms
+
+DS50
+SA Set 0 SA{T0=1500, nrep=500, alpha=0.90}    | value = 1954  | weight = 681   | time = 3.991 ms
+SA Set 1 SA{T0=15000, nrep=1500, alpha=0.99}  | value = 1966  | weight = 676   | time = 193.097 ms
+SA Set 2 SA{T0=500, nrep=200, alpha=0.85}     | value = 1891  | weight = 674   | time = 1.544 ms
+
+DS100
+SA Set 0 SA{T0=1500, nrep=500, alpha=0.90}    | value = 3891  | weight = 1416  | time = 5.972 ms
+SA Set 1 SA{T0=15000, nrep=1500, alpha=0.99}  | value = 4003  | weight = 1425  | time = 182.814 ms
+SA Set 2 SA{T0=500, nrep=200, alpha=0.85}     | value = 3782  | weight = 1422  | time = 1.101 ms
+
+================================================================================
+5. Genetic Algorithm
+================================================================================
+
+DS8
+GA Set 0 GA{pop=1000, iter=50, cx=80%, mut=15%, clone=5%} | value = 211   | weight = 124   | time = 65.892 ms
+GA Set 1 GA{pop=50, iter=1000, cx=60%, mut=30%, clone=10%} | value = 211   | weight = 124   | time = 35.887 ms
+GA Set 2 GA{pop=200, iter=200, cx=70%, mut=20%, clone=10%} | value = 211   | weight = 124   | time = 22.065 ms
+
+DS10
+GA Set 0 GA{pop=1000, iter=50, cx=80%, mut=15%, clone=5%} | value = 379   | weight = 141   | time = 15.657 ms
+GA Set 1 GA{pop=50, iter=1000, cx=60%, mut=30%, clone=10%} | value = 379   | weight = 141   | time = 15.247 ms
+GA Set 2 GA{pop=200, iter=200, cx=70%, mut=20%, clone=10%} | value = 379   | weight = 141   | time = 10.996 ms
+
+DS50
+GA Set 0 GA{pop=1000, iter=50, cx=80%, mut=15%, clone=5%} | value = 1971  | weight = 679   | time = 65.703 ms
+GA Set 1 GA{pop=50, iter=1000, cx=60%, mut=30%, clone=10%} | value = 1966  | weight = 676   | time = 34.334 ms
+GA Set 2 GA{pop=200, iter=200, cx=70%, mut=20%, clone=10%} | value = 1971  | weight = 679   | time = 28.008 ms
+
+DS100
+GA Set 0 GA{pop=1000, iter=50, cx=80%, mut=15%, clone=5%} | value = 4071  | weight = 1425  | time = 199.721 ms
+GA Set 1 GA{pop=50, iter=1000, cx=60%, mut=30%, clone=10%} | value = 4038  | weight = 1425  | time = 94.355 ms
+GA Set 2 GA{pop=200, iter=200, cx=70%, mut=20%, clone=10%} | value = 4071  | weight = 1425  | time = 46.415 ms
+
+================================================================================
+6. Solution quality comparison
+================================================================================
+DS     | BT       | NS       | SA[0]    SA[1]    SA[2]    | GA[0]    GA[1]    GA[2]
+------------------------------------------------------------------------------------------
+DS8    | 211      | 206      | 211      211      211      | 211      211      211
+DS10   | 379      | 278      | 379      379      379      | 379      379      379
+DS50   | N/A      | 1527     | 1954     1966     1891     | 1971     1966     1971
+DS100  | N/A      | 2570     | 3891     4003     3782     | 4071     4038     4071
+
+================================================================================
+7. Time comparison
+================================================================================
+Backtracking / Neighborhood Search:
+TB-10 / TB-8                   = 0.43
+TNS-10 / TNS-8                 = 0.67
+TB-8 / TNS-8                   = 5.17
+TB-10 / TNS-10                 = 3.35
+
+Simulated Annealing:
+TSA[0]-10 / TSA[0]-8           = 0.40
+TB-8 / TSA[0]-8                = 0.01
+TB-10 / TSA[0]-10              = 0.01
+TSA[1]-10 / TSA[1]-8           = 0.54
+TB-8 / TSA[1]-8                = 0.00
+TB-10 / TSA[1]-10              = 0.00
+TSA[2]-10 / TSA[2]-8           = 0.64
+TB-8 / TSA[2]-8                = 0.07
+TB-10 / TSA[2]-10              = 0.05
+
+Genetic Algorithm:
+TGA[0]-10 / TGA[0]-8           = 0.24
+TB-8 / TGA[0]-8                = 0.00
+TB-10 / TGA[0]-10              = 0.00
+TGA[1]-10 / TGA[1]-8           = 0.42
+TB-8 / TGA[1]-8                = 0.00
+TB-10 / TGA[1]-10              = 0.00
+TGA[2]-10 / TGA[2]-8           = 0.50
+TB-8 / TGA[2]-8                = 0.00
+TB-10 / TGA[2]-10              = 0.00
+
+Large datasets:
+DS     | NS         | SA[0]        | SA[1]        | SA[2]
+------------------------------------------------------------
+DS50   | 0.024      | 3.991        | 193.097      | 1.544
+DS100  | 0.042      | 5.972        | 182.814      | 1.101
+
+DS     | NS         | GA[0]        | GA[1]        | GA[2]
+------------------------------------------------------------
+DS50   | 0.024      | 65.703       | 34.334       | 28.008
+DS100  | 0.042      | 199.721      | 94.355       | 46.415
+
+================================================================================
+8. Parameter sets and obtained values
+================================================================================
+Simulated Annealing parameter sets:
+SA[0]: T0=1500,  nrep=500,  alpha=0.90
+SA[1]: T0=15000, nrep=1500, alpha=0.99
+SA[2]: T0=500,   nrep=200,  alpha=0.85
+
+DS     | SA[0]      | SA[1]      | SA[2]
+---------------------------------------------
+DS8    | 211        | 211        | 211
+DS10   | 379        | 379        | 379
+DS50   | 1954       | 1966       | 1891
+DS100  | 3891       | 4003       | 3782
+
+Genetic Algorithm parameter sets:
+GA[0]: population=1000, iterations=50,   crossover=80%, mutation=15%, cloning=5%
+GA[1]: population=50,   iterations=1000, crossover=60%, mutation=30%, cloning=10%
+GA[2]: population=200,  iterations=200,  crossover=70%, mutation=20%, cloning=10%
+
+DS     | GA[0]      | GA[1]      | GA[2]
+---------------------------------------------
+DS8    | 211        | 211        | 211
+DS10   | 379        | 379        | 379
+DS50   | 1971       | 1966       | 1971
+DS100  | 4071       | 4038       | 4071
+
+================================================================================
+Done
+================================================================================
+
+
+Conclusions
+
+Backtracking found the optimal solutions for DS8 and DS10, but it is only practical for small datasets because the search space grows exponentially. The unusual timing where DS10 is faster than DS8 is caused by very small execution times and JVM/runtime noise, not by better theoretical performance.
+
+Neighborhood Search was the fastest method, but it produced weaker solutions on large datasets. For example, on DS50 it obtained 1527, while SA and GA reached values close to 1971. On DS100, NS obtained 2570, while GA reached 4071.
+
+Simulated Annealing improved significantly over Neighborhood Search. The best SA configuration was SA[1], with higher temperature, more repetitions, and slower cooling. It produced better solutions but required more execution time.
+
+Genetic Algorithm produced the best overall results on DS50 and DS100, reaching 1971 and 4071. It was slower than Neighborhood Search, but the solution quality was much better.
+
+Overall, Backtracking is exact but infeasible for large instances, Neighborhood Search is very fast but can get stuck in local optima, while SA and GA are better heuristic choices for larger datasets.

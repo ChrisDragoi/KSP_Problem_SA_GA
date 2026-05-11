@@ -19,40 +19,40 @@ import java.util.Random;
 public class SimulatedAnnealing {
     private static final double MIN_TEMP = 0.01;
 
-    private final Dataset   ds;
+    private final Dataset ds;
     private final RunLogger logger;
-    private final Random    rand = new Random();
+    private final Random rand = new Random();
 
     private final double initialTemp;   // t0
-    private final int    tempLength;    // nrep
+    private final int tempLength;    // nrep
     private final double coolingRatio;  // alpha
 
     public SimulatedAnnealing(Dataset ds, double initialTemp,
                               int tempLength, double coolingRatio) {
-        this.ds           = ds;
-        this.initialTemp  = initialTemp;
-        this.tempLength   = tempLength;
+        this.ds = ds;
+        this.initialTemp = initialTemp;
+        this.tempLength = tempLength;
         this.coolingRatio = coolingRatio;
-        this.logger       = new RunLogger();
+        this.logger = new RunLogger();
     }
 
     public Solution solve() {
-        Solution s0   = DataGenerator.randomFeasibleSolution(ds, rand);
+        Solution s0 = DataGenerator.randomFeasibleSolution(ds, rand);
         Solution best = new Solution(s0);
-        double   t    = initialTemp;
+        double t = initialTemp;
 
         while (t > MIN_TEMP) {
 
             for (int i = 0; i < tempLength; i++) {
-                Solution s    = randomNeighbor(s0);
-                double   delta = s.cost(ds) - s0.cost(ds);
+                Solution s = randomNeighbor(s0);
+                double delta = s.cost(ds) - s0.cost(ds);
 
                 if (delta < 0) {
                     // Îmbunătățire: acceptăm mereu
                     s0 = s;
                 } else {
                     // Soluție mai slabă: acceptăm cu probabilitatea Metropolis
-                    if (rand.nextDouble() < Math.exp(-delta / t)) {
+                    if (rand.nextDouble() < Math.exp(-delta/t)) {
                         s0 = s;
                     }
                 }

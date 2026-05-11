@@ -50,8 +50,14 @@ public class NeighborhoodSearch {
     private Solution flip(Solution s, int i) {
         Solution n = new Solution(s);
         n.items[i] = !n.items[i];
-        if (n.items[i]) { n.totalWeight += ds.g[i]; n.totalValue += ds.v[i]; }
-        else            { n.totalWeight -= ds.g[i]; n.totalValue -= ds.v[i]; }
+        if (n.items[i]) {
+            n.totalWeight += ds.g[i];
+            n.totalValue += ds.v[i];
+        }
+        else {
+            n.totalWeight -= ds.g[i];
+            n.totalValue -= ds.v[i];
+        }
         return n;
     }
 
