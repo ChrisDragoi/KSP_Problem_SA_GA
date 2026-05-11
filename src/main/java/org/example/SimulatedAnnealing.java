@@ -27,8 +27,7 @@ public class SimulatedAnnealing {
     private final int tempLength;    // nrep
     private final double coolingRatio;  // alpha
 
-    public SimulatedAnnealing(Dataset ds, double initialTemp,
-                              int tempLength, double coolingRatio) {
+    public SimulatedAnnealing(Dataset ds, double initialTemp, int tempLength, double coolingRatio) {
         this.ds = ds;
         this.initialTemp = initialTemp;
         this.tempLength = tempLength;
