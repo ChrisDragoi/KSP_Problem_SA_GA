@@ -47,13 +47,11 @@ public class GeneticAlgorithm {
         for (int iter = 0; iter < iterations; iter++) {
             List<Solution> next = new ArrayList<>(populationSize);
 
-            // 1. Cloning (elitism): cei mai buni supraviețuiesc nemodificați
             int nClone = (int) Math.round(populationSize * cloningRate);
             for (int i = 0; i < nClone && i < population.size(); i++) {
                 next.add(new Solution(population.get(i)));
             }
 
-            // 2. Crossover: producem copii din părinți selectați prin turneu
             int nCross = (int) Math.round(populationSize * crossoverRate);
             while (next.size() < nClone + nCross) {
                 Solution p1 = tournamentSelect(population);
@@ -65,13 +63,11 @@ public class GeneticAlgorithm {
                 }
             }
 
-            // 3. Mutation: mutăm indivizi selectați prin turneu
             int nMut = (int) Math.round(populationSize * mutationRate);
             for (int i = 0; i < nMut; i++) {
                 next.add(repair(mutate(tournamentSelect(population))));
             }
 
-            // 4. Completăm cu soluții random feasible dacă mai e nevoie
             while (next.size() < populationSize) {
                 next.add(DataGenerator.randomFeasibleSolution(ds, rand));
             }
@@ -82,7 +78,6 @@ public class GeneticAlgorithm {
             population = next;
             sortByFitness(population);
 
-            // Logăm cel mai bun individ din generația curentă (req. #16)
             Solution iterBest = population.getFirst();
             logger.log(iterBest.cost(ds));
             if (iterBest.isBetterThan(bestEver, ds)) {
@@ -105,7 +100,6 @@ public class GeneticAlgorithm {
         return pop;
     }
 
-    // Descrescător după valoare; la egalitate, crescător după greutate
     private void sortByFitness(List<Solution> pop) {
         pop.sort((a, b) -> {
             if (b.totalValue != a.totalValue) return b.totalValue - a.totalValue;
@@ -113,7 +107,6 @@ public class GeneticAlgorithm {
         });
     }
 
-    // Turneu: alege K indivizi random, returnează cel mai bun
     private Solution tournamentSelect(List<Solution> pop) {
         Solution best = null;
         for (int i = 0; i < TOURNAMENT_K; i++) {
@@ -123,7 +116,6 @@ public class GeneticAlgorithm {
         return best;
     }
 
-    // Crossover single-point: produce 2 copii
     private Solution[] crossover(Solution p1, Solution p2) {
         int point = 1 + rand.nextInt(ds.N - 1);
         Solution c1 = new Solution(ds.N);
@@ -142,12 +134,15 @@ public class GeneticAlgorithm {
         Solution m = new Solution(s);
         int i = rand.nextInt(ds.N);
         m.items[i] = !m.items[i];
-        if (m.items[i]) { m.totalWeight += ds.g[i]; m.totalValue += ds.v[i]; }
-        else            { m.totalWeight -= ds.g[i]; m.totalValue -= ds.v[i]; }
+        if (m.items[i]) {
+            m.totalWeight += ds.g[i]; m.totalValue += ds.v[i];
+        }
+        else {
+            m.totalWeight -= ds.g[i]; m.totalValue -= ds.v[i];
+        }
         return m;
     }
 
-    // Repair: scoate obiecte cu cel mai slab raport v/g până soluția e feasible
     private Solution repair(Solution s) {
         if (s.isFeasible(ds)) return s;
 
@@ -155,15 +150,14 @@ public class GeneticAlgorithm {
         for (int i = 0; i < ds.N; i++) {
             if (s.items[i]) included.add(i);
         }
-        // Sortăm crescător după v/g (cel mai slab raport = primul scos)
         included.sort(Comparator.comparingDouble(i -> (double) ds.v[i] / ds.g[i]));
 
         Solution r = new Solution(s);
         for (int idx : included) {
             if (r.isFeasible(ds)) break;
-            r.items[idx]   = false;
+            r.items[idx] = false;
             r.totalWeight -= ds.g[idx];
-            r.totalValue  -= ds.v[idx];
+            r.totalValue -= ds.v[idx];
         }
         return r;
     }

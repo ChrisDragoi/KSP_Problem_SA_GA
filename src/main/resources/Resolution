@@ -187,3 +187,58 @@ Simulated Annealing improved significantly over Neighborhood Search. The best SA
 Genetic Algorithm produced the best overall results on DS50 and DS100, reaching 1971 and 4071. It was slower than Neighborhood Search, but the solution quality was much better.
 
 Overall, Backtracking is exact but infeasible for large instances, Neighborhood Search is very fast but can get stuck in local optima, while SA and GA are better heuristic choices for larger datasets.
+
+
+Requirement 1:
+The KSP dataset was defined as DS = {G, N, g[], v[]}, where G is the knapsack capacity, N is the number of objects, g[] contains the weights, and v[] contains the values. A solution is represented as a boolean vector, where true means that the object is selected.
+
+Requirement 2:
+Four controlled random datasets were generated: DS8, DS10, DS50 and DS100. The weights and values were generated randomly, but the capacity was chosen as approximately 50% of the total weight, so that not all objects can fit into the knapsack and the problem remains non-trivial.
+
+Requirement 3:
+Backtracking was implemented and executed on DS8 and DS10. It found the optimal solution value 211 for DS8 and 379 for DS10. Backtracking explores the binary decision tree of including or excluding each object.
+
+Requirement 4:
+The measured backtracking times were 0.092 ms for DS8 and 0.040 ms for DS10, with TB-10/TB-8 = 0.43. The fact that DS10 appears faster is caused by very small execution times and JVM/runtime measurement noise. Theoretically, the search space grows exponentially, so backtracking is not feasible for DS50 and DS100.
+
+Requirement 5:
+Neighborhood Search was implemented and executed on all datasets. It obtained values 206 on DS8, 278 on DS10, 1527 on DS50 and 2570 on DS100. Compared with backtracking on DS8 and DS10, it was faster but did not always find the optimal solution.
+
+Requirement 6:
+Neighborhood Search execution times were very small: 0.018 ms for DS8, 0.012 ms for DS10, 0.024 ms for DS50 and 0.042 ms for DS100. The method is feasible for larger datasets, but the solution quality is weaker than SA and GA.
+
+Requirement 7:
+Neighborhood Search is much faster than backtracking and can be applied to larger datasets. However, it can stop in a local optimum and does not guarantee the optimal solution. Backtracking is exact, but only usable for small datasets.
+
+Requirement 8:
+Simulated Annealing was implemented and executed on all four datasets using three parameter sets. SA[0] used T0=1500, nrep=500, alpha=0.90. SA[1] used T0=15000, nrep=1500, alpha=0.99. SA[2] used T0=500, nrep=200, alpha=0.85.
+
+Requirement 9:
+Genetic Algorithm was implemented and executed on all four datasets using three parameter sets. GA[0] used population=1000, iterations=50, crossover=80%, mutation=15%, cloning=5%. GA[1] used population=50, iterations=1000, crossover=60%, mutation=30%, cloning=10%. GA[2] used population=200, iterations=200, crossover=70%, mutation=20%, cloning=10%.
+
+Requirement 10:
+SA and GA were compared with Neighborhood Search and Backtracking. On DS8 and DS10, SA and GA reached the same values as backtracking. On DS50 and DS100, GA obtained the best results, reaching 1971 on DS50 and 4071 on DS100.
+
+Requirement 11:
+The execution times for all SA and GA runs were measured. SA[1] was the slowest SA configuration because it used the highest temperature, most repetitions and slowest cooling. GA required more time than Neighborhood Search, but produced much better solutions on large datasets.
+
+Requirement 12:
+On DS50 and DS100, Neighborhood Search was the fastest method, but it produced much weaker results. SA and GA required more time, but obtained significantly better solutions. GA produced the best overall quality on the large datasets.
+
+Requirement 13:
+The best SA configuration was SA[1]. It obtained 1966 on DS50 and 4003 on DS100. This shows that a higher initial temperature, more repetitions and slower cooling improve exploration, but also increase execution time.
+
+Requirement 14:
+The best GA results were obtained by GA[0] and GA[2]. Both reached 1971 on DS50 and 4071 on DS100. GA[1] was slightly weaker on DS100, probably because the smaller population reduced diversity.
+
+Requirement 15:
+Backtracking is exact but infeasible for large datasets. Neighborhood Search is very fast but can get stuck in local optima. Simulated Annealing and Genetic Algorithm are better choices for larger datasets because they obtain much better solutions in reasonable time.
+
+Requirement 16:
+The project includes a RunLogger module for storing intermediate best solutions during algorithm execution. This allows the evolution of the solution cost/value to be represented graphically. For GA, the best individual in each generation is used as the representative.
+
+Requirement 17:
+The results, comparisons and conclusions from the implementation can be used in the article “A heuristic approach to solving the knapsack problem. Simulated annealing and genetic algorithms”. The article should describe the implemented methods and discuss the obtained results.
+
+Requirement 18:
+The conclusions are based on the measured values and comparisons from the experiments. The results show that heuristic methods are a viable alternative to backtracking for large KSP instances, especially when comparing execution time and solution quality.

@@ -47,10 +47,8 @@ public class SimulatedAnnealing {
                 double delta = s.cost(ds) - s0.cost(ds);
 
                 if (delta < 0) {
-                    // Îmbunătățire: acceptăm mereu
                     s0 = s;
                 } else {
-                    // Soluție mai slabă: acceptăm cu probabilitatea Metropolis
                     if (rand.nextDouble() < Math.exp(-delta/t)) {
                         s0 = s;
                     }
@@ -61,17 +59,14 @@ public class SimulatedAnnealing {
                 }
             }
 
-            // Logăm best-so-far la sfârșitul fiecărui nivel de temperatură (req. #16)
             logger.log(best.cost(ds));
 
-            // Răcire geometrică: t = alpha * t
             t *= coolingRatio;
         }
 
         return best;
     }
 
-    // Vecin aleator: flip pe un bit ales random
     private Solution randomNeighbor(Solution s) {
         Solution n = new Solution(s);
         int i = rand.nextInt(ds.N);
